@@ -83,44 +83,48 @@ export default function Home() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <header className="container border-b border-gray-300 border-solid border-x-0 border-t-0 py-5">
-        {selectedImage?.length > 0 ? (
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              {/* <input
-              checked={allChecked}
-              className="w-6 h-6"
-              type="checkbox"
-              onChange={handleAllSelect}
-            /> */}
+      <main className="bg-slate-100 py-5">
+        <div className="container max-w-6xl shadow px-0 bg-white rounded-md pb-5">
+          <header className="border-b border-gray-300 border-solid border-x-0 border-t-0 py-5 px-10">
+            {selectedImage?.length > 0 ? (
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                  {/* <input
+                    checked={allChecked}
+                    className="w-5 h-5"
+                    type="checkbox"
+                    onChange={handleAllSelect}
+                  /> */}
 
-              <input
-                checked={selectedImage?.length ? true : false}
-                className="w-6 h-6"
-                type="checkbox"
-                readOnly
-              />
-              <h4>
-                {selectedImage?.length}{" "}
-                {singleOrMultiple(selectedImage?.length, ["File", "Files"])}{" "}
-                Selected
-              </h4>
-            </div>
+                  <input
+                    checked={selectedImage?.length ? true : false}
+                    className="w-5 h-5"
+                    type="checkbox"
+                    readOnly
+                  />
+                  <h4>
+                    {selectedImage?.length}{" "}
+                    {singleOrMultiple(selectedImage?.length, ["File", "Files"])}{" "}
+                    Selected
+                  </h4>
+                </div>
 
-            <button
-              className="text-red-600 hover:underline border-none bg-transparent font-medium cursor-pointer"
-              onClick={handleRemoveImages}
-            >
-              Delete{" "}
-              {singleOrMultiple(selectedImage?.length, ["file", "files"])}
-            </button>
-          </div>
-        ) : (
-          <h4>Gallery</h4>
-        )}
-      </header>
+                <button
+                  className="text-red-600 hover:underline border-none bg-transparent font-medium cursor-pointer"
+                  onClick={handleRemoveImages}
+                >
+                  Delete{" "}
+                  {singleOrMultiple(selectedImage?.length, ["file", "files"])}
+                </button>
+              </div>
+            ) : (
+              <h4>Gallery</h4>
+            )}
+          </header>
 
-      <GalleryArea data={imageGallery} handleSelect={handleSelect} />
+          <GalleryArea data={imageGallery} handleSelect={handleSelect} />
+        </div>
+      </main>
     </DragDropContext>
   );
 }

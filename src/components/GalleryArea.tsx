@@ -12,7 +12,7 @@ export default function GalleryArea({ data, handleSelect }: Props) {
     <Droppable droppableId="imageItems">
       {(provided) => (
         <section
-          className="container grid grid-cols-5 gap-5 mt-5"
+          className="grid grid-cols-5 gap-5 mt-5 px-10"
           ref={provided.innerRef}
           {...provided.droppableProps}
         >

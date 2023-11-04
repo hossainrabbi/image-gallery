@@ -38,7 +38,7 @@ export default function ImageItem({
           <input
             type="checkbox"
             checked={item?.checked}
-            className="absolute top-5 left-5 w-6 h-6 z-50 hidden"
+            className="absolute top-5 left-5 w-5 h-5 z-50 hidden"
             readOnly
           />
           <img
