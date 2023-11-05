@@ -12,7 +12,7 @@ type Props = {
 export default function GalleryArea({ data, handleSelect }: Props) {
   const [items, setItems] = useState(data);
 
-  const moveItem = (fromIndex: any, toIndex: any) => {
+  const moveItem = (fromIndex: number, toIndex: number) => {
     const updatedItems = [...items];
     const [movedItem] = updatedItems.splice(fromIndex, 1);
     updatedItems.splice(toIndex, 0, movedItem);

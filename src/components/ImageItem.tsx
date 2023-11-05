@@ -25,10 +25,13 @@ export default function ImageItem({
     item: { index },
   });
 
-  const [, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop({
     accept: ITEM_TYPE,
     hover: (draggedItem: { index: number }) => {
-      console.log(draggedItem, index);
+      if (draggedItem.index !== index) {
+        moveItem(draggedItem.index, index);
+        draggedItem.index = index;
+      }
     },
     drop: (draggedItem: { index: number }) => {
       if (draggedItem.index !== index) {
@@ -36,16 +39,19 @@ export default function ImageItem({
         draggedItem.index = index;
       }
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   });
 
   return (
     <div
-      className={`border border-solid border-gray-300 relative transition-colors hover:after:content-[''] after:absolute after:bg-gray-900/50 after:rounded-lg after:w-full after:h-full z-10 after:left-0 after:top-0 rounded-lg ${
-        index === 0 ? "col-span-2 row-span-2 " : ""
-      } ${imageItem?.checked ? "show-check " : ""} ${
-        mouseHover ? "show-check" : ""
-      } ${className}`}
-      onClick={() => handleSelect(imageItem.id)}
+      className={`border border-solid border-gray-300 relative transition-all hover:after:content-[''] after:absolute after:bg-gray-900/50 after:rounded-lg after:w-full after:h-full z-10 after:left-0 after:top-0 rounded-lg ${
+        isOver ? "after:bg-gray-900 " : ""
+      } ${index === 0 ? "col-span-2 row-span-2 " : ""} ${
+        imageItem?.checked ? "show-check " : ""
+      } ${mouseHover ? "show-check" : ""} ${className}`}
+      onClick={() => handleSelect(imageItem?.id)}
       onMouseOver={() => setMouseHover(true)}
       onMouseLeave={() => setMouseHover(false)}
       ref={(node) => ref(drop(node))}
@@ -60,8 +66,8 @@ export default function ImageItem({
         className={`w-full h-full rounded-lg object-cover ${
           imageItem?.checked ? "opacity-50 z-10" : ""
         }`}
-        src={imageItem.img}
-        alt={`image_${imageItem.id}`}
+        src={imageItem?.img}
+        alt={`image_${imageItem?.id}`}
       />
     </div>
   );
