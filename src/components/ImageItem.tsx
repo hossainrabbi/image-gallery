@@ -1,55 +1,68 @@
 import { useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { ImageItemType } from "../types";
 
 type Props = {
-  item: ImageItemType;
-  className?: string;
-  id: string;
   index: number;
+  imageItem: ImageItemType;
+  className?: string;
+  moveItem: (fromIndex: number, toIndex: number) => void;
   handleSelect: (id: number) => void;
 };
 
+const ITEM_TYPE = "TYPE_OF_ITEM";
+
 export default function ImageItem({
-  item,
-  className,
-  id,
   index,
+  imageItem,
+  moveItem,
+  className,
   handleSelect,
 }: Props) {
   const [mouseHover, setMouseHover] = useState(false);
+  const [, ref] = useDrag({
+    type: ITEM_TYPE,
+    item: { index },
+  });
+
+  const [, drop] = useDrop({
+    accept: ITEM_TYPE,
+    hover: (draggedItem: { index: number }) => {
+      console.log(draggedItem, index);
+    },
+    drop: (draggedItem: { index: number }) => {
+      if (draggedItem.index !== index) {
+        moveItem(draggedItem.index, index);
+        draggedItem.index = index;
+      }
+    },
+  });
 
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <div
-          className={`border border-solid border-gray-300 relative transition-colors hover:after:content-[''] after:absolute after:bg-gray-900/50 after:rounded-lg after:w-full after:h-full z-10 after:left-0 after:top-0 rounded-lg ${
-            index === 0 ? "col-span-2 row-span-2 " : ""
-          } ${item?.checked ? "show-check " : ""} ${
-            mouseHover ? "show-check" : ""
-          } ${className}`}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          onClick={() => handleSelect(item.id)}
-          onMouseOver={() => setMouseHover(true)}
-          onMouseLeave={() => setMouseHover(false)}
-        >
-          <input
-            type="checkbox"
-            checked={item?.checked}
-            className="absolute top-5 left-5 w-5 h-5 z-50 hidden"
-            readOnly
-          />
-          <img
-            className={`w-full h-full rounded-lg object-cover ${
-              item?.checked ? "opacity-50 z-10" : ""
-            }`}
-            src={item.img}
-            alt={`image_${item.id}`}
-          />
-        </div>
-      )}
-    </Draggable>
+    <div
+      className={`border border-solid border-gray-300 relative transition-colors hover:after:content-[''] after:absolute after:bg-gray-900/50 after:rounded-lg after:w-full after:h-full z-10 after:left-0 after:top-0 rounded-lg ${
+        index === 0 ? "col-span-2 row-span-2 " : ""
+      } ${imageItem?.checked ? "show-check " : ""} ${
+        mouseHover ? "show-check" : ""
+      } ${className}`}
+      onClick={() => handleSelect(imageItem.id)}
+      onMouseOver={() => setMouseHover(true)}
+      onMouseLeave={() => setMouseHover(false)}
+      ref={(node) => ref(drop(node))}
+    >
+      <input
+        type="checkbox"
+        checked={imageItem?.checked}
+        className="absolute top-5 left-5 w-5 h-5 z-50 hidden"
+        readOnly
+      />
+      <img
+        className={`w-full h-full rounded-lg object-cover ${
+          imageItem?.checked ? "opacity-50 z-10" : ""
+        }`}
+        src={imageItem.img}
+        alt={`image_${imageItem.id}`}
+      />
+    </div>
   );
 }

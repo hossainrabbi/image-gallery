@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import GalleryArea from "../components/GalleryArea";
 import { data } from "../data/data";
 import { ImageItemType } from "../types";
@@ -45,33 +44,6 @@ export default function Home() {
     setImageGallery(item);
   };
 
-  // drag and drop handler
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source } = result;
-
-    let add = {} as ImageItemType,
-      activeGalleryList = imageGallery;
-
-    if (
-      !destination ||
-      (destination.droppableId === source.droppableId &&
-        destination.index === source.index)
-    ) {
-      return;
-    }
-
-    if (source.droppableId === "imageItems") {
-      add = activeGalleryList[source.index];
-      activeGalleryList.splice(source.index, 1);
-    }
-
-    if (destination.droppableId === "imageItems") {
-      activeGalleryList.splice(destination.index, 0, add);
-    }
-
-    setImageGallery(activeGalleryList);
-  };
-
   // remove selected image handler
   const handleRemoveImages = () => {
     setImageGallery(imageGallery?.filter((el) => !el?.checked));
@@ -82,49 +54,47 @@ export default function Home() {
   // }, [selectedImage.length]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <main className="bg-slate-100 py-5">
-        <div className="container max-w-6xl shadow px-0 bg-white rounded-md pb-5">
-          <header className="border-b border-gray-300 border-solid border-x-0 border-t-0 py-5 px-10">
-            {selectedImage?.length > 0 ? (
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                  {/* <input
+    <main className="bg-slate-100 py-5">
+      <div className="container max-w-6xl shadow px-0 bg-white rounded-md pb-5">
+        <header className="border-b border-gray-300 border-solid border-x-0 border-t-0 py-5 px-10">
+          {selectedImage?.length > 0 ? (
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                {/* <input
                     checked={allChecked}
                     className="w-5 h-5"
                     type="checkbox"
                     onChange={handleAllSelect}
                   /> */}
 
-                  <input
-                    checked={selectedImage?.length ? true : false}
-                    className="w-5 h-5"
-                    type="checkbox"
-                    readOnly
-                  />
-                  <h4>
-                    {selectedImage?.length}{" "}
-                    {singleOrMultiple(selectedImage?.length, ["File", "Files"])}{" "}
-                    Selected
-                  </h4>
-                </div>
-
-                <button
-                  className="text-red-600 hover:underline border-none bg-transparent font-medium cursor-pointer"
-                  onClick={handleRemoveImages}
-                >
-                  Delete{" "}
-                  {singleOrMultiple(selectedImage?.length, ["file", "files"])}
-                </button>
+                <input
+                  checked={selectedImage?.length ? true : false}
+                  className="w-5 h-5"
+                  type="checkbox"
+                  readOnly
+                />
+                <h4>
+                  {selectedImage?.length}{" "}
+                  {singleOrMultiple(selectedImage?.length, ["File", "Files"])}{" "}
+                  Selected
+                </h4>
               </div>
-            ) : (
-              <h4>Gallery</h4>
-            )}
-          </header>
 
-          <GalleryArea data={imageGallery} handleSelect={handleSelect} />
-        </div>
-      </main>
-    </DragDropContext>
+              <button
+                className="text-red-600 hover:underline border-none bg-transparent font-medium cursor-pointer"
+                onClick={handleRemoveImages}
+              >
+                Delete{" "}
+                {singleOrMultiple(selectedImage?.length, ["file", "files"])}
+              </button>
+            </div>
+          ) : (
+            <h4>Gallery</h4>
+          )}
+        </header>
+
+        <GalleryArea data={imageGallery} handleSelect={handleSelect} />
+      </div>
+    </main>
   );
 }
