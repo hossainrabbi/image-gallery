@@ -1,4 +1,6 @@
-## Image Gallery
+# Image Gallery
+
+### [Demo](https://image-gallery-online-task.netlify.app/)
 
 ## Project Features
 
@@ -6,7 +8,7 @@
 - Add a featured image
 - Delete multiple images
 
-## Tools you need to know.
+## Tools.
 
 - React JS
 - React Dnd
