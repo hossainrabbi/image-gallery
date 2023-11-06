@@ -1,3 +1,3 @@
 export default function Loader() {
-  return <div>Loading...</div>;
+  return <div className="flex justify-center my-5 text-center">Loading...</div>;
 }
